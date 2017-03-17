@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="cz.mxmx.a2048.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30pt"
+        android:text="4096"
+        android:textAlignment="center"
+        android:textSize="70sp"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="50dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/highScore"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="133dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="30pt"
+        android:layout_marginLeft="30pt"
+        android:layout_marginRight="30pt"
+        android:layout_marginTop="30pt"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:onClick="startPlaying"
+        android:text="@string/play"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="16pt" />
+</LinearLayout>
