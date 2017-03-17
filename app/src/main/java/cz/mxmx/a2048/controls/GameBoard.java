@@ -3,10 +3,13 @@ package cz.mxmx.a2048.controls;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import cz.mxmx.a2048.R;
@@ -49,8 +52,7 @@ public class GameBoard extends View {
             this.boardDimension = a.getInt(R.styleable.GameBoard_boardDimension, this.boardDimension);
             this.boardBackgroundColor = a.getResourceId(R.styleable.GameBoard_boardBackground, ResourcesCompat.getColor(this.getResources(), this.boardBackgroundColor, null));
             this.fieldBackgroundColor = a.getResourceId(R.styleable.GameBoard_fieldBackground, ResourcesCompat.getColor(this.getResources(), this.fieldBackgroundColor, null));
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             a.recycle();
         }
 
@@ -61,21 +63,20 @@ public class GameBoard extends View {
 
         this.fieldBackgroundPaint = new Paint();
         this.fieldBackgroundPaint.setColor(ResourcesCompat.getColor(this.getResources(), this.fieldBackgroundColor, null));
-
+        this.setOnTouchListener(new GameGestureDetector(this.getContext()));
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(this.paddingLeft == null) {
-            this.paddingLeft = getPaddingLeft();
-            this.paddingTop = getPaddingTop();
-            this.paddingRight = getPaddingRight();
-        }
+        this.paddingLeft = getPaddingLeft();
+        this.paddingTop = getPaddingTop();
+        this.paddingRight = getPaddingRight();
 
         int width = getWidth() - paddingLeft - paddingRight;
         this.drawBoard(canvas, width);
-        this.drawFields(canvas, paddingLeft, paddingTop, width);
+        this.drawFields(canvas, width);
     }
 
     private void drawBoard(Canvas canvas, int width) {
@@ -83,21 +84,46 @@ public class GameBoard extends View {
         canvas.drawRect(this.rect, this.backgroundPaint); // this isn't a typo
     }
 
-    private void drawFields(Canvas canvas, int x, int y, int size) {
-        int w = (size - ((this.boardDimension + 1) * this.padding))/this.boardDimension;
+    private void drawFields(Canvas canvas, int size) {
+        int w = (size - ((this.boardDimension + 1) * this.padding)) / this.boardDimension;
 
-        for (int i = 1; i <= this.boardDimension; i++) {
-            for (int j = 1; j <= this.boardDimension; j++) {
-                this.drawField(canvas, x + i * this.padding + (i-1) * w, y + j * this.padding + (j-1) * w, w);
+        for (int i = 0; i < this.boardDimension; i++) {
+            for (int j = 0; j < this.boardDimension; j++) {
+                this.drawField(canvas, i, j, w, this.fieldBackgroundPaint);
             }
         }
+
+        this.drawValue(canvas, 0, 0, w, null, "2048");
+        this.drawValue(canvas, 2, 1, w, null, "2048");
+        this.drawValue(canvas, 1, 2, w, null, "2048");
     }
 
-    private void drawField(Canvas canvas, int x, int y, int size) {
+    private void drawValue(Canvas canvas, int left, int top, int size, Paint paint, String value) {
+        this.drawField(canvas, left, top, size, this.backgroundPaint);
+
+        Paint textPaint = new Paint();
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(100);
+        textPaint.setFakeBoldText(true);
+        int x = this.getFieldX(left, size);
+        int y = this.getFieldY(top, size);
+        canvas.drawText(value, x + 40, y + 180, textPaint);
+    }
+
+    private void drawField(Canvas canvas, int left, int top, int size, Paint paint) {
+        int x = this.getFieldX(left, size);
+        int y = this.getFieldY(top, size);
         this.rect.set(x, y, x + size, y + size);
-        canvas.drawRect(this.rect, this.fieldBackgroundPaint);
+        canvas.drawRect(this.rect, paint);
     }
 
+    private int getFieldX(int left, int size) {
+        return this.paddingLeft + (left + 1) * this.padding + left * size;
+    }
+
+    private int getFieldY(int top, int size) {
+        return this.paddingTop + (top + 1) * this.padding + top * size;
+    }
 
     public int getBoardDimension() {
         return this.boardDimension;
