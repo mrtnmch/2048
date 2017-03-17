@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="cz.mxmx.a2048.BoardActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cz.mxmx.a2048.BoardActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,4 +59,13 @@
                 android:textAlignment="center" />
         </LinearLayout>
     </LinearLayout>
+
+    <cz.mxmx.a2048.controls.GameBoard
+        android:id="@+id/gameBoard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:boardBackground="@color/colorPrimary"
+        app:fieldBackground="@color/colorAccent"
+        app:boardDimension="4" />
 </LinearLayout>
