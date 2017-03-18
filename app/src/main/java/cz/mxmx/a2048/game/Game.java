@@ -20,13 +20,16 @@ public class Game implements SwipeGestureListener {
     }
 
     public Game(GameGestureDetector gameGestureDetector, GameBoard board, GameStateChangedListener listener) {
+        this.score = 0;
         this.gameGestureDetector = gameGestureDetector;
         gameStateChangedListener = listener;
         this.gameGestureDetector.addSwipeGestureListener(this);
         this.board = board;
-        random = new Random();
         this.dimension = board.getBoardDimension();
-        this.score = 0;
+        this.currentFields = new FieldsContainer(this.dimension);
+        this.board.setCurrentFields(this.currentFields);
+        this.board.invalidate();
+        random = new Random();
     }
 
     @Override

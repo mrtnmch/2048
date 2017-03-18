@@ -3,4 +3,7 @@
     <string name="highScore">High score</string>
     <string name="play">Play!</string>
     <string name="score">Score</string>
+    <string name="restart">Restart</string>
+    <string name="preference_key">preference</string>
+    <string name="high_score_key">high_score</string>
 </resources>

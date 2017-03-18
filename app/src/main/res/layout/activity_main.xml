@@ -7,11 +7,10 @@
     android:layout_height="match_parent" tools:context="cz.mxmx.a2048.MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mainHighScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="30pt"
-        android:text="4096"
         android:textAlignment="center"
         android:textSize="70sp"
         tools:layout_editor_absoluteX="113dp"
