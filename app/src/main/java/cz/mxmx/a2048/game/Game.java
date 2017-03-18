@@ -12,6 +12,7 @@ public class Game implements SwipeGestureListener {
     private final GameBoard board;
     private final Random random;
     private final int dimension;
+    private int score;
     private FieldsContainer currentFields;
 
     public Game(GameGestureDetector gameGestureDetector, GameBoard board) {
@@ -25,6 +26,7 @@ public class Game implements SwipeGestureListener {
         this.board = board;
         random = new Random();
         this.dimension = board.getBoardDimension();
+        this.score = 0;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class Game implements SwipeGestureListener {
                             if (temp.equals(val)) {
                                 copy.setField(i, k, val + temp);
                                 copy.setField(i, k - 1, null);
+                                this.addScore(val + temp);
                                 moved = true;
                                 break;
                             }
@@ -83,6 +86,7 @@ public class Game implements SwipeGestureListener {
                             if (temp.equals(val)) {
                                 copy.setField(i, k, val + temp);
                                 copy.setField(i, k + 1, null);
+                                this.addScore(val + temp);
                                 moved = true;
                                 break;
                             }
@@ -120,6 +124,7 @@ public class Game implements SwipeGestureListener {
                             if (temp.equals(val)) {
                                 copy.setField(k, j, val + temp);
                                 copy.setField(k + 1, j, null);
+                                this.addScore(val + temp);
                                 moved = true;
                                 break;
                             }
@@ -157,6 +162,7 @@ public class Game implements SwipeGestureListener {
                             if (temp.equals(val)) {
                                 copy.setField(k, j, val + temp);
                                 copy.setField(k - 1, j, null);
+                                this.addScore(val + temp);
                                 moved = true;
                                 break;
                             }
@@ -180,6 +186,13 @@ public class Game implements SwipeGestureListener {
         this.board.setCurrentFields(newFields);
         this.board.invalidate();
         this.currentFields = newFields;
+        this.triggerInfo();
+    }
+
+    protected void triggerInfo() {
+        if(this.gameStateChangedListener != null) {
+            this.gameStateChangedListener.gameStateChanged();
+        }
     }
 
     private void newField(FieldsContainer copy) {
@@ -201,5 +214,14 @@ public class Game implements SwipeGestureListener {
         this.currentFields = new FieldsContainer(this.dimension);
         this.currentFields.setField(top, left, 2);
         this.board.setCurrentFields(this.currentFields);
+        this.triggerInfo();
+    }
+
+    protected void addScore(int value) {
+        this.score += value;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
