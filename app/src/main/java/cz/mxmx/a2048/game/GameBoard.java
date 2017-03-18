@@ -102,7 +102,7 @@ public class GameBoard extends View {
                     Integer val = this.currentFields.getField(i, j);
 
                     if (val != null) {
-                        this.drawValue(canvas, i, j, w, null, val.toString());
+                        this.drawValue(canvas, i, j, w, this.fieldBackgroundPaint, val.toString());
                     }
                 }
             }
@@ -110,7 +110,27 @@ public class GameBoard extends View {
     }
 
     private void drawValue(Canvas canvas, int top, int left, int size, Paint paint, String value) {
-        this.drawField(canvas, top, left, size, this.backgroundPaint);
+        Paint fieldPaint;
+        try {
+            int intValue = Integer.parseInt(value);
+            Double log = Math.log10(intValue) / Math.log10(2);
+            int intLog = log.intValue();
+            int color = Color.red(paint.getColor());
+            // magic:
+            if(intLog == 1) {
+                color = color - 10;
+            } else if(intLog < 4) {
+                color = color - 10 - (int)(Math.pow(intLog, 3));
+            } else {
+                color = color - 10 - (int)(Math.pow(3, 3))  - (int)(Math.pow(intLog, 2));
+            }
+
+            fieldPaint = new Paint();
+            fieldPaint.setColor(Color.rgb(color, color, color));
+        } catch (NumberFormatException e) {
+            fieldPaint = paint;
+        }
+        this.drawField(canvas, top, left, size, fieldPaint);
 
         Paint textPaint = new Paint();
         textPaint.setTextAlign(Paint.Align.CENTER);
