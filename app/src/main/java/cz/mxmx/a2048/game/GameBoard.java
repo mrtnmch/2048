@@ -113,12 +113,13 @@ public class GameBoard extends View {
         this.drawField(canvas, top, left, size, this.backgroundPaint);
 
         Paint textPaint = new Paint();
+        textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(100);
         textPaint.setFakeBoldText(true);
         int x = this.getFieldX(left, size);
         int y = this.getFieldY(top, size);
-        canvas.drawText(value, x + 40, y + 180, textPaint);
+        canvas.drawText(value, x + 145, y + 180, textPaint);
     }
 
     private void drawField(Canvas canvas, int top, int left, int size, Paint paint) {
