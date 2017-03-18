@@ -1,4 +1,4 @@
-package cz.mxmx.a2048.controls;
+package cz.mxmx.a2048.game;
 
 import android.content.Context;
 import android.view.GestureDetector;

@@ -1,9 +1,6 @@
-package cz.mxmx.a2048.controls;
+package cz.mxmx.a2048.game;
 
 import android.content.Context;
-import android.support.v4.view.GestureDetectorCompat;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 
 /**
  * Created by mxmx on 17.3.17.

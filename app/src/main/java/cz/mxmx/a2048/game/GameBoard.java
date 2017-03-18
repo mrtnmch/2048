@@ -1,4 +1,4 @@
-package cz.mxmx.a2048.controls;
+package cz.mxmx.a2048.game;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,8 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 
 import cz.mxmx.a2048.R;

@@ -60,7 +60,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <cz.mxmx.a2048.controls.GameBoard
+    <cz.mxmx.a2048.game.GameBoard
         android:id="@+id/gameBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
