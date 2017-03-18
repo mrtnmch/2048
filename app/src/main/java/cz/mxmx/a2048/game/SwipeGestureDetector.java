@@ -61,15 +61,15 @@ public abstract class SwipeGestureDetector implements View.OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
+    protected void onSwipeRight() {
     }
 
-    public void onSwipeLeft() {
+    protected void onSwipeLeft() {
     }
 
-    public void onSwipeTop() {
+    protected void onSwipeTop() {
     }
 
-    public void onSwipeBottom() {
+    protected void onSwipeBottom() {
     }
 }

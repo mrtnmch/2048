@@ -26,6 +26,9 @@ public class GameBoard extends View {
     private Paint backgroundPaint;
     private Paint fieldBackgroundPaint;
     private Rect rect;
+    private FieldsContainer currentFields;
+    private OnTouchListener touchListener;
+    private GameGestureDetector gestureDetector;
 
     public GameBoard(Context context) {
         super(context);
@@ -61,7 +64,9 @@ public class GameBoard extends View {
 
         this.fieldBackgroundPaint = new Paint();
         this.fieldBackgroundPaint.setColor(ResourcesCompat.getColor(this.getResources(), this.fieldBackgroundColor, null));
-        this.setOnTouchListener(new GameGestureDetector(this.getContext()));
+        this.gestureDetector = new PlainGameGestureDetector(this.getContext());
+        this.touchListener = (OnTouchListener) this.gestureDetector;
+        this.setOnTouchListener(this.touchListener);
     }
 
     @Override
@@ -91,13 +96,21 @@ public class GameBoard extends View {
             }
         }
 
-        this.drawValue(canvas, 0, 0, w, null, "2048");
-        this.drawValue(canvas, 2, 1, w, null, "2048");
-        this.drawValue(canvas, 1, 2, w, null, "2048");
+        if (this.currentFields != null) {
+            for (int i = 0; i < this.boardDimension; i++) {
+                for (int j = 0; j < this.boardDimension; j++) {
+                    Integer val = this.currentFields.getField(i, j);
+
+                    if (val != null) {
+                        this.drawValue(canvas, i, j, w, null, val.toString());
+                    }
+                }
+            }
+        }
     }
 
-    private void drawValue(Canvas canvas, int left, int top, int size, Paint paint, String value) {
-        this.drawField(canvas, left, top, size, this.backgroundPaint);
+    private void drawValue(Canvas canvas, int top, int left, int size, Paint paint, String value) {
+        this.drawField(canvas, top, left, size, this.backgroundPaint);
 
         Paint textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
@@ -108,7 +121,7 @@ public class GameBoard extends View {
         canvas.drawText(value, x + 40, y + 180, textPaint);
     }
 
-    private void drawField(Canvas canvas, int left, int top, int size, Paint paint) {
+    private void drawField(Canvas canvas, int top, int left, int size, Paint paint) {
         int x = this.getFieldX(left, size);
         int y = this.getFieldY(top, size);
         this.rect.set(x, y, x + size, y + size);
@@ -129,6 +142,22 @@ public class GameBoard extends View {
 
     public void setBoardDimension(int dimension) {
         this.boardDimension = dimension;
+    }
+
+    public FieldsContainer getCurrentFields() {
+        return this.currentFields;
+    }
+
+    public void setCurrentFields(FieldsContainer container) {
+        this.currentFields = container;
+    }
+
+    public GameGestureDetector getGestureDetector() {
+        return this.gestureDetector;
+    }
+
+    public void setGestureDetector(GameGestureDetector gestureDetector) {
+        this.gestureDetector = gestureDetector;
     }
 
 }
