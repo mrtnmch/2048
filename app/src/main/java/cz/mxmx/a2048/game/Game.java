@@ -7,6 +7,7 @@ import java.util.Random;
  */
 
 public class Game implements SwipeGestureListener {
+    private static final Integer TARGET_VALUE = 2048;
     private final GameGestureDetector gameGestureDetector;
     private final GameStateChangedListener gameStateChangedListener;
     private final GameBoard board;
@@ -39,16 +40,17 @@ public class Game implements SwipeGestureListener {
 
         for (int j = 0; j < this.dimension; j++) {
             for (int i = this.dimension - 1; i > 0; i--) {
-                Integer field = copy.getField(j, i);
 
                 for (int k = i - 1; k >= 0; k--) {
+                    Integer field = copy.getField(j, i);
                     Integer fieldCmp = copy.getField(j, k);
 
                     if (field == null && fieldCmp != null) {
                         copy.setField(j, i, fieldCmp);
                         copy.setField(j, k, null);
                         moved = true;
-                        break;
+                        k++;
+                        continue;
                     } else if (field != null && field.equals(fieldCmp)) {
                         copy.setField(j, i, field + fieldCmp);
                         copy.setField(j, k, null);
@@ -76,16 +78,17 @@ public class Game implements SwipeGestureListener {
 
         for (int j = 0; j < this.dimension; j++) {
             for (int i = 0; i < this.dimension; i++) {
-                Integer field = copy.getField(j, i);
 
                 for (int k = i + 1; k < this.dimension; k++) {
+                    Integer field = copy.getField(j, i);
                     Integer fieldCmp = copy.getField(j, k);
 
                     if (field == null && fieldCmp != null) {
                         copy.setField(j, i, fieldCmp);
                         copy.setField(j, k, null);
                         moved = true;
-                        break;
+                        k--;
+                        continue;
                     } else if (field != null && field.equals(fieldCmp)) {
                         copy.setField(j, i, field + fieldCmp);
                         copy.setField(j, k, null);
@@ -113,16 +116,17 @@ public class Game implements SwipeGestureListener {
 
         for (int j = 0; j < this.dimension; j++) {
             for (int i = 0; i < this.dimension; i++) {
-                Integer field = copy.getField(i, j);
 
                 for (int k = i + 1; k < this.dimension; k++) {
+                    Integer field = copy.getField(i, j);
                     Integer fieldCmp = copy.getField(k, j);
 
                     if (field == null && fieldCmp != null) {
                         copy.setField(i, j, fieldCmp);
                         copy.setField(k, j, null);
                         moved = true;
-                        break;
+                        k--;
+                        continue;
                     } else if (field != null && field.equals(fieldCmp)) {
                         copy.setField(i, j, field + fieldCmp);
                         copy.setField(k, j, null);
@@ -150,16 +154,17 @@ public class Game implements SwipeGestureListener {
 
         for (int j = 0; j < this.dimension; j++) {
             for (int i = this.dimension - 1; i > 0; i--) {
-                Integer field = copy.getField(i, j);
 
                 for (int k = i - 1; k >= 0; k--) {
+                    Integer field = copy.getField(i, j);
                     Integer fieldCmp = copy.getField(k, j);
 
                     if (field == null && fieldCmp != null) {
                         copy.setField(i, j, fieldCmp);
                         copy.setField(k, j, null);
                         moved = true;
-                        break;
+                        k++;
+                        continue;
                     } else if (field != null && field.equals(fieldCmp)) {
                         copy.setField(i, j, field + fieldCmp);
                         copy.setField(k, j, null);
@@ -204,7 +209,7 @@ public class Game implements SwipeGestureListener {
             temp = copy.getField(top, left);
         } while (temp != null);
 
-        copy.setField(top, left, 2);
+        copy.setField(top, left, 2 * (1 + this.random.nextInt(2)));
     }
 
     public void start() {
@@ -222,5 +227,47 @@ public class Game implements SwipeGestureListener {
 
     public int getScore() {
         return score;
+    }
+
+    public boolean isWin() {
+        for (int i = 0; i < this.dimension; i++) {
+            for (int j = 0; j < this.dimension; j++) {
+                if(this.currentFields.getField(i, j) != null && this.currentFields.getField(i, j).equals(TARGET_VALUE)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isLoose() {
+        return !this.canMove();
+    }
+
+    private boolean canMove() {
+        for (int i = 0; i < this.dimension; i++) {
+            for (int j = 0; j < this.dimension - 1; j++) {
+                Integer val1 = this.currentFields.getField(i, j);
+                Integer val2 = this.currentFields.getField(i, j + 1);
+
+                if(val1 == null || val2 == null || val1.equals(val2)) {
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < this.dimension; i++) {
+            for (int j = 0; j < this.dimension - 1; j++) {
+                Integer val1 = this.currentFields.getField(j, i);
+                Integer val2 = this.currentFields.getField(j + 1, i);
+
+                if(val1 == null || val2 == null || val1.equals(val2)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
