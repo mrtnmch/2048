@@ -37,35 +37,34 @@ public class Game implements SwipeGestureListener {
         FieldsContainer copy = new FieldsContainer(this.currentFields);
         boolean moved = false;
 
-        for (int i = 0; i < this.dimension; i++) {
-            for (int j = this.dimension - 1; j >= 0; j--) {
-                Integer val = copy.getField(i, j);
+        for (int j = 0; j < this.dimension; j++) {
+            for (int i = this.dimension - 1; i > 0; i--) {
+                Integer field = copy.getField(j, i);
 
-                if (val != null) {
-                    Integer temp;
+                for (int k = i - 1; k >= 0; k--) {
+                    Integer fieldCmp = copy.getField(j, k);
 
-                    for (int k = j + 1; k < this.dimension; k++) {
-                        temp = copy.getField(i, k);
-
-                        if (temp != null) {
-                            if (temp.equals(val)) {
-                                copy.setField(i, k, val + temp);
-                                copy.setField(i, k - 1, null);
-                                this.addScore(val + temp);
-                                moved = true;
-                                break;
-                            }
-                        } else {
-                            copy.setField(i, k, val);
-                            copy.setField(i, k - 1, null);
-                            moved = true;
-                        }
+                    if (field == null && fieldCmp != null) {
+                        copy.setField(j, i, fieldCmp);
+                        copy.setField(j, k, null);
+                        moved = true;
+                        break;
+                    } else if (field != null && field.equals(fieldCmp)) {
+                        copy.setField(j, i, field + fieldCmp);
+                        copy.setField(j, k, null);
+                        this.addScore(field + fieldCmp);
+                        moved = true;
+                        break;
+                    } else if (fieldCmp != null && !field.equals(fieldCmp)) {
+                        break;
+                    } else if (fieldCmp == null) {
+                        continue;
                     }
                 }
             }
         }
 
-        if(moved) {
+        if (moved) {
             this.move(copy);
         }
     }
@@ -75,35 +74,34 @@ public class Game implements SwipeGestureListener {
         FieldsContainer copy = new FieldsContainer(this.currentFields);
         boolean moved = false;
 
-        for (int i = 0; i < this.dimension; i++) {
-            for (int j = 1; j < this.dimension; j++) {
-                Integer val = copy.getField(i, j);
+        for (int j = 0; j < this.dimension; j++) {
+            for (int i = 0; i < this.dimension; i++) {
+                Integer field = copy.getField(j, i);
 
-                if (val != null) {
-                    Integer temp;
+                for (int k = i + 1; k < this.dimension; k++) {
+                    Integer fieldCmp = copy.getField(j, k);
 
-                    for (int k = j - 1; k >= 0; k--) {
-                        temp = copy.getField(i, k);
-
-                        if (temp != null) {
-                            if (temp.equals(val)) {
-                                copy.setField(i, k, val + temp);
-                                copy.setField(i, k + 1, null);
-                                this.addScore(val + temp);
-                                moved = true;
-                                break;
-                            }
-                        } else {
-                            copy.setField(i, k, val);
-                            copy.setField(i, k + 1, null);
-                            moved = true;
-                        }
+                    if (field == null && fieldCmp != null) {
+                        copy.setField(j, i, fieldCmp);
+                        copy.setField(j, k, null);
+                        moved = true;
+                        break;
+                    } else if (field != null && field.equals(fieldCmp)) {
+                        copy.setField(j, i, field + fieldCmp);
+                        copy.setField(j, k, null);
+                        this.addScore(field + fieldCmp);
+                        moved = true;
+                        break;
+                    } else if (fieldCmp != null && !field.equals(fieldCmp)) {
+                        break;
+                    } else if (fieldCmp == null) {
+                        continue;
                     }
                 }
             }
         }
 
-        if(moved) {
+        if (moved) {
             this.move(copy);
         }
     }
@@ -113,35 +111,34 @@ public class Game implements SwipeGestureListener {
         FieldsContainer copy = new FieldsContainer(this.currentFields);
         boolean moved = false;
 
-        for (int i = 1; i < this.dimension; i++) {
-            for (int j = 0; j < this.dimension; j++) {
-                Integer val = copy.getField(i, j);
+        for (int j = 0; j < this.dimension; j++) {
+            for (int i = 0; i < this.dimension; i++) {
+                Integer field = copy.getField(i, j);
 
-                if (val != null) {
-                    Integer temp;
+                for (int k = i + 1; k < this.dimension; k++) {
+                    Integer fieldCmp = copy.getField(k, j);
 
-                    for (int k = i - 1; k >= 0; k--) {
-                        temp = copy.getField(k, j);
-
-                        if (temp != null) {
-                            if (temp.equals(val)) {
-                                copy.setField(k, j, val + temp);
-                                copy.setField(k + 1, j, null);
-                                this.addScore(val + temp);
-                                moved = true;
-                                break;
-                            }
-                        } else {
-                            copy.setField(k, j, val);
-                            copy.setField(k + 1, j, null);
-                            moved = true;
-                        }
+                    if (field == null && fieldCmp != null) {
+                        copy.setField(i, j, fieldCmp);
+                        copy.setField(k, j, null);
+                        moved = true;
+                        break;
+                    } else if (field != null && field.equals(fieldCmp)) {
+                        copy.setField(i, j, field + fieldCmp);
+                        copy.setField(k, j, null);
+                        this.addScore(field + fieldCmp);
+                        moved = true;
+                        break;
+                    } else if (fieldCmp != null && !field.equals(fieldCmp)) {
+                        break;
+                    } else if (fieldCmp == null) {
+                        continue;
                     }
                 }
             }
         }
 
-        if(moved) {
+        if (moved) {
             this.move(copy);
         }
     }
@@ -151,35 +148,34 @@ public class Game implements SwipeGestureListener {
         FieldsContainer copy = new FieldsContainer(this.currentFields);
         boolean moved = false;
 
-        for (int i = this.dimension - 1; i >= 0; i--) {
-            for (int j = 0; j < this.dimension; j++) {
-                Integer val = copy.getField(i, j);
+        for (int j = 0; j < this.dimension; j++) {
+            for (int i = this.dimension - 1; i > 0; i--) {
+                Integer field = copy.getField(i, j);
 
-                if (val != null) {
-                    Integer temp;
+                for (int k = i - 1; k >= 0; k--) {
+                    Integer fieldCmp = copy.getField(k, j);
 
-                    for (int k = i + 1; k < this.dimension; k++) {
-                        temp = copy.getField(k, j);
-
-                        if (temp != null) {
-                            if (temp.equals(val)) {
-                                copy.setField(k, j, val + temp);
-                                copy.setField(k - 1, j, null);
-                                this.addScore(val + temp);
-                                moved = true;
-                                break;
-                            }
-                        } else {
-                            copy.setField(k, j, val);
-                            copy.setField(k - 1, j, null);
-                            moved = true;
-                        }
+                    if (field == null && fieldCmp != null) {
+                        copy.setField(i, j, fieldCmp);
+                        copy.setField(k, j, null);
+                        moved = true;
+                        break;
+                    } else if (field != null && field.equals(fieldCmp)) {
+                        copy.setField(i, j, field + fieldCmp);
+                        copy.setField(k, j, null);
+                        this.addScore(field + fieldCmp);
+                        moved = true;
+                        break;
+                    } else if (fieldCmp != null && !field.equals(fieldCmp)) {
+                        break;
+                    } else if (fieldCmp == null) {
+                        continue;
                     }
                 }
             }
         }
 
-        if(moved) {
+        if (moved) {
             this.move(copy);
         }
     }
@@ -193,7 +189,7 @@ public class Game implements SwipeGestureListener {
     }
 
     protected void triggerInfo() {
-        if(this.gameStateChangedListener != null) {
+        if (this.gameStateChangedListener != null) {
             this.gameStateChangedListener.gameStateChanged();
         }
     }
@@ -206,7 +202,7 @@ public class Game implements SwipeGestureListener {
             top = this.random.nextInt(this.dimension);
             left = this.random.nextInt(this.dimension);
             temp = copy.getField(top, left);
-        } while(temp != null);
+        } while (temp != null);
 
         copy.setField(top, left, 2);
     }
