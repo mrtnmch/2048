@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +38,16 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         this.scoreTextView = (TextView) this.findViewById(R.id.currentScore);
         this.highScoreTextView = (TextView) this.findViewById(R.id.highScore);
         this.restart();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            this.confirmLeaveDialog();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     protected int getHighScore() {
