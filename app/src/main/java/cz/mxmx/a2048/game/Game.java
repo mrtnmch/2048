@@ -3,23 +3,49 @@ package cz.mxmx.a2048.game;
 import java.util.Random;
 
 /**
- * Created by mxmx on 18.3.17.
+ * 2048 Game representation.
  */
-
 public class Game implements SwipeGestureListener {
+
+    /** Target value to reach for */
     private static final Integer TARGET_VALUE = 2048;
+
+    /** Game gesture detector (swiping) */
     private final GameGestureDetector gameGestureDetector;
+
+    /**  Game state changed (fields moved) listener. */
     private final GameStateChangedListener gameStateChangedListener;
+
+    /** Game board */
     private final GameBoard board;
+
+    /** Random number generator */
     private final Random random;
+
+    /** Dimensions of the game board */
     private final int dimension;
+
+    /** Current score */
     private int score;
+
+    /** Current game fields */
     private FieldsContainer currentFields;
 
+    /**
+     * Creates new game without any listener.
+     * @param gameGestureDetector Gesture detector to use.
+     * @param board Game board.
+     */
     public Game(GameGestureDetector gameGestureDetector, GameBoard board) {
         this(gameGestureDetector, board, null);
     }
 
+    /**
+     * Creates new game with listener to send updates to.
+     * @param gameGestureDetector Gesture detector to use.
+     * @param board Game board.
+     * @param listener Listener to send updates to.
+     */
     public Game(GameGestureDetector gameGestureDetector, GameBoard board, GameStateChangedListener listener) {
         this.score = 0;
         this.gameGestureDetector = gameGestureDetector;
@@ -185,6 +211,10 @@ public class Game implements SwipeGestureListener {
         }
     }
 
+    /**
+     * Sets new fields to the game board.
+     * @param newFields New fields.
+     */
     protected void move(FieldsContainer newFields) {
         this.newField(newFields);
         this.board.setCurrentFields(newFields);
@@ -193,25 +223,35 @@ public class Game implements SwipeGestureListener {
         this.triggerInfo();
     }
 
+    /**
+     * Triggers game state changed message listener (if any).
+     */
     protected void triggerInfo() {
         if (this.gameStateChangedListener != null) {
             this.gameStateChangedListener.gameStateChanged();
         }
     }
 
-    private void newField(FieldsContainer copy) {
+    /**
+     * Add a new value to the fields container.
+     * @param container Container to use.
+     */
+    private void newField(FieldsContainer container) {
         Integer temp;
         int top, left;
 
         do {
             top = this.random.nextInt(this.dimension);
             left = this.random.nextInt(this.dimension);
-            temp = copy.getField(top, left);
+            temp = container.getField(top, left);
         } while (temp != null);
 
-        copy.setField(top, left, 2 * (1 + this.random.nextInt(2)));
+        container.setField(top, left, 2 * (1 + this.random.nextInt(2)));
     }
 
+    /**
+     * Start a game.
+     */
     public void start() {
         int left = this.random.nextInt(this.dimension);
         int top = this.random.nextInt(this.dimension);
@@ -221,6 +261,10 @@ public class Game implements SwipeGestureListener {
         this.triggerInfo();
     }
 
+    /**
+     * Add new value to the score.
+     * @param value Score += value
+     */
     protected void addScore(int value) {
         this.score += value;
     }
@@ -229,6 +273,9 @@ public class Game implements SwipeGestureListener {
         return score;
     }
 
+    /**
+     * @return Returns true if any of the fields has reached the targed value (ie 2048).
+     */
     public boolean isWin() {
         for (int i = 0; i < this.dimension; i++) {
             for (int j = 0; j < this.dimension; j++) {
@@ -241,10 +288,16 @@ public class Game implements SwipeGestureListener {
         return false;
     }
 
+    /**
+     * @return Returns true if there's no possible move.
+     */
     public boolean isLoose() {
         return !this.canMove();
     }
 
+    /**
+     * @return Returns true if there's a possible move.
+     */
     private boolean canMove() {
         for (int i = 0; i < this.dimension; i++) {
             for (int j = 0; j < this.dimension - 1; j++) {

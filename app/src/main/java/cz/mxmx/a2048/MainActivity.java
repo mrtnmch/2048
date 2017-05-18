@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * Main activity (entry point).
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /** Text view with current high score */
     private TextView highScoreTextView;
 
     @Override
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         this.highScoreTextView.setText(this.getHighScore() + "");
     }
 
+    /**
+     * Start a new activity to start the game
+     * @param caller Caller.
+     */
     protected void startPlaying(View caller) {
         Intent startPlating = new Intent(this, BoardActivity.class);
         this.startActivity(startPlating);

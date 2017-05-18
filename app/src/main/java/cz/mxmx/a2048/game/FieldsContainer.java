@@ -3,18 +3,28 @@ package cz.mxmx.a2048.game;
 import java.util.Arrays;
 
 /**
- * Created by mxmx on 18.3.17.
+ * Container representing a set of fields on the playground.
  */
-
 public class FieldsContainer {
+    /** Dimension (d x d) */
     private final int dimension;
+
+    /** Fields itself - value or NULL */
     private final Integer[][] fields;
 
+    /**
+     * Creates a new fields container.
+     * @param dimension Dimension of the fields (d x d).
+     */
     public FieldsContainer(int dimension) {
         this.dimension = dimension;
         this.fields = new Integer[dimension][dimension];
     }
 
+    /**
+     * Creates a copy of the passed container.
+     * @param copy Container to make a copy of. Is not altered at all.
+     */
     public FieldsContainer(FieldsContainer copy){
         this(copy.getDimension());
         this.copyFields(copy.getFields());

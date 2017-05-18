@@ -1,9 +1,11 @@
 package cz.mxmx.a2048.game;
 
 /**
- * Created by mxmx on 18.3.17.
+ * Game state change listener.
  */
-
 public interface GameStateChangedListener {
+    /**
+     * Send "game state changed" message.
+     */
     public void gameStateChanged();
 }

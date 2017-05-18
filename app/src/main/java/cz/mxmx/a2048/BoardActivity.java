@@ -21,13 +21,30 @@ import cz.mxmx.a2048.game.GameStateChangedListener;
 
 import static cz.mxmx.a2048.R.string.score;
 
+/**
+ * Game board activity.
+ */
 public class BoardActivity extends AppCompatActivity implements GameStateChangedListener {
+
+    /** Score text holder */
     protected TextView scoreTextView;
+
+    /** High score holder */
     protected TextView highScoreTextView;
+
+    /** Game board */
     private GameBoard board;
+
+    /** Game holder */
     private Game game;
+
+    /** Current high score */
     private int highScore;
+
+    /** Current score */
     private int score;
+
+    /** True if the "you've won" dialog has already been shown */
     private boolean wonInformed = false;
 
     @Override
@@ -52,11 +69,19 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * Returns current high score from the shared preferences.
+     * @return High score.
+     */
     protected int getHighScore() {
         SharedPreferences preferences = this.getSharedPreferences(this.getString(R.string.preference_key), Context.MODE_PRIVATE);
         return preferences.getInt(this.getString(R.string.high_score_key), 0);
     }
 
+    /**
+     * Saves high score into the shared preferences.
+     * @param score High score to save.
+     */
     protected void saveHighScore(int score) {
         SharedPreferences preferences = this.getSharedPreferences(this.getString(R.string.preference_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -64,6 +89,9 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         editor.apply();
     }
 
+    /**
+     * Restart the game.
+     */
     protected void restart() {
         this.game = new Game(this.board.getGestureDetector(), this.board, this);
         this.game.start();
@@ -93,6 +121,9 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         return true;
     }
 
+    /**
+     * Show leave confirm dialog.
+     */
     protected void confirmLeaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -120,6 +151,9 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         alert.show();
     }
 
+    /**
+     * Show restart confirm dialog.
+     */
     protected void confirmRestartDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -147,31 +181,9 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         alert.show();
     }
 
-    protected void checkSaveHighScore() {
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.highScoreTextView.setText(this.highScore + "");
-            this.saveHighScore(this.score);
-        }
-    }
-
-    @Override
-    public void gameStateChanged() {
-        if (this.scoreTextView != null && this.highScoreTextView != null) {
-            this.score = this.game.getScore();
-            this.scoreTextView.setText(this.score + "");
-            this.checkSaveHighScore();
-
-            if(this.game.isWin() && !this.wonInformed) {
-                this.confirmWinDialog();
-            }
-
-            if(this.game.isLoose()) {
-                this.confirmLostDialog();
-            }
-        }
-    }
-
+    /**
+     * Show win confirm dialog.
+     */
     private void confirmWinDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -199,6 +211,9 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
         alert.show();
     }
 
+    /**
+     * Show lost confirm dialog.
+     */
     protected void confirmLostDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -226,5 +241,33 @@ public class BoardActivity extends AppCompatActivity implements GameStateChanged
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /**
+     * Check score. If higher than current high score, set it as the new high score.
+     */
+    protected void checkSaveHighScore() {
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            this.highScoreTextView.setText(this.highScore + "");
+            this.saveHighScore(this.score);
+        }
+    }
+
+    @Override
+    public void gameStateChanged() {
+        if (this.scoreTextView != null && this.highScoreTextView != null) {
+            this.score = this.game.getScore();
+            this.scoreTextView.setText(this.score + "");
+            this.checkSaveHighScore();
+
+            if(this.game.isWin() && !this.wonInformed) {
+                this.confirmWinDialog();
+            }
+
+            if(this.game.isLoose()) {
+                this.confirmLostDialog();
+            }
+        }
     }
 }

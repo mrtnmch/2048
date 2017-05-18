@@ -13,21 +13,47 @@ import android.view.View;
 import cz.mxmx.a2048.R;
 
 /**
- * TODO: document your custom view class.
+ * Game board representation.
  */
 public class GameBoard extends View {
+
+    /** Default board background color */
     private int boardBackgroundColor = R.color.colorPrimary;
+
+    /** Default field background color */
     private int fieldBackgroundColor = R.color.colorAccent;
+
+    /** Board dimensions */
     private int boardDimension;
+
+    /** Field padding value */
     private int padding = 10;
+
+    /** Padding left */
     private Integer paddingLeft;
+
+    /** Padding top */
     private Integer paddingTop;
+
+    /** Padding right */
     private Integer paddingRight;
+
+    /** Background paint */
     private Paint backgroundPaint;
+
+    /** Field background paint */
     private Paint fieldBackgroundPaint;
+
+    /** Rectangle holder to draw */
     private Rect rect;
+
+    /** Fields container */
     private FieldsContainer currentFields;
+
+    /** Touch listener */
     private OnTouchListener touchListener;
+
+    /** Game gesture detector */
     private GameGestureDetector gestureDetector;
 
     public GameBoard(Context context) {
@@ -46,7 +72,6 @@ public class GameBoard extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.GameBoard, defStyle, 0);
 
         try {
@@ -82,11 +107,21 @@ public class GameBoard extends View {
         this.drawFields(canvas, width);
     }
 
+    /**
+     * Draws a board of width given to the given canvas.
+     * @param canvas
+     * @param width
+     */
     private void drawBoard(Canvas canvas, int width) {
         this.rect.set(paddingLeft, paddingTop, width, width);
         canvas.drawRect(this.rect, this.backgroundPaint); // this isn't a typo
     }
 
+    /**
+     * Draw fields on the board of given size.
+     * @param canvas
+     * @param size
+     */
     private void drawFields(Canvas canvas, int size) {
         int w = (size - ((this.boardDimension + 1) * this.padding)) / this.boardDimension;
 
@@ -109,6 +144,15 @@ public class GameBoard extends View {
         }
     }
 
+    /**
+     * Draw value into a field
+     * @param canvas Drawing canvas
+     * @param top Top margin
+     * @param left Left margin
+     * @param size Size of the fields
+     * @param paint Paint to draw with.
+     * @param value Value of the field.
+     */
     private void drawValue(Canvas canvas, int top, int left, int size, Paint paint, String value) {
         Paint fieldPaint;
         try {
@@ -142,6 +186,14 @@ public class GameBoard extends View {
         canvas.drawText(value, x + 145, y + 180, textPaint);
     }
 
+    /**
+     * Draw a field into the canvas.
+     * @param canvas Drawing canvas.
+     * @param top Top margin.
+     * @param left Left margin.
+     * @param size Size of the field.
+     * @param paint Paint to draw with.
+     */
     private void drawField(Canvas canvas, int top, int left, int size, Paint paint) {
         int x = this.getFieldX(left, size);
         int y = this.getFieldY(top, size);
